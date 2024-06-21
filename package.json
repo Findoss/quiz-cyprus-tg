@@ -13,8 +13,8 @@
     "he": "^1.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.4",
+    "semantic-ui-css": "^3.0.0",
+    "semantic-ui-react": "^3.0.0",
     "sweetalert2": "^11.7.31"
   },
   "devDependencies": {
