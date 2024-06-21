@@ -10,7 +10,6 @@ import { shuffle } from '../../utils';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState(null);
   const [data, setData] = useState(null);
   const [countdownTime, setCountdownTime] = useState(null);
   const [isQuizStarted, setIsQuizStarted] = useState(false);
@@ -19,10 +18,7 @@ const App = () => {
 
   const startQuiz = (data, countdownTime) => {
     setLoading(true);
-    setLoadingMessage({
-      title: 'Loading your quiz...',
-      message: "It won't be long!",
-    });
+
     setCountdownTime(countdownTime);
 
     setTimeout(() => {
@@ -34,10 +30,6 @@ const App = () => {
 
   const endQuiz = (resultData) => {
     setLoading(true);
-    setLoadingMessage({
-      title: 'Fetching your results...',
-      message: 'Just a moment!',
-    });
 
     setTimeout(() => {
       setIsQuizStarted(false);
@@ -49,10 +41,6 @@ const App = () => {
 
   const replayQuiz = () => {
     setLoading(true);
-    setLoadingMessage({
-      title: 'Getting ready for round two.',
-      message: "It won't take long!",
-    });
 
     const shuffledData = shuffle(data);
     shuffledData.forEach((element) => {
@@ -71,10 +59,6 @@ const App = () => {
 
   const resetQuiz = () => {
     setLoading(true);
-    setLoadingMessage({
-      title: 'Loading the home screen.',
-      message: 'Thank you for playing!',
-    });
 
     setTimeout(() => {
       setData(null);

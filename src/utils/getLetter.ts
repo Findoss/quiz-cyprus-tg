@@ -1,4 +1,4 @@
-const getLetter = (number) => {
+const getLetter = (number: number) => {
   let letter;
 
   switch (number) {

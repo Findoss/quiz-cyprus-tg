@@ -1,4 +1,4 @@
-const timeConverter = (milliseconds) => {
+const timeConverter = (milliseconds: number) => {
   if (
     milliseconds === null ||
     milliseconds === undefined ||

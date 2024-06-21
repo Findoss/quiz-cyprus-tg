@@ -1,4 +1,4 @@
-const calculateScore = (totalQuestions, correctAnswers) => {
+const calculateScore = (totalQuestions: number, correctAnswers: number) => {
   if (totalQuestions === 0) {
     return 0;
   }

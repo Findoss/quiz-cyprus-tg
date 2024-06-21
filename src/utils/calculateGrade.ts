@@ -1,4 +1,4 @@
-const calculateGrade = (score) => {
+const calculateGrade = (score: string) => {
   if (score === null || score === undefined || typeof score !== 'number') {
     return null;
   }
