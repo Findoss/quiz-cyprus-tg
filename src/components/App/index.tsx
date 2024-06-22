@@ -25,7 +25,7 @@ const App = () => {
       setData(data);
       setIsQuizStarted(true);
       setLoading(false);
-    }, 1000);
+    }, 100);
   };
 
   const endQuiz = (resultData) => {
@@ -36,7 +36,7 @@ const App = () => {
       setIsQuizCompleted(true);
       setResultData(resultData);
       setLoading(false);
-    }, 2000);
+    }, 200);
   };
 
   const replayQuiz = () => {
@@ -54,7 +54,7 @@ const App = () => {
       setIsQuizCompleted(false);
       setResultData(null);
       setLoading(false);
-    }, 1000);
+    }, 100);
   };
 
   const resetQuiz = () => {
@@ -67,7 +67,7 @@ const App = () => {
       setIsQuizCompleted(false);
       setResultData(null);
       setLoading(false);
-    }, 1000);
+    }, 100);
   };
 
   return (

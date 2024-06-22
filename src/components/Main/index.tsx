@@ -94,7 +94,7 @@ const Main = ({ startQuiz }) => {
             results,
             countdownTime.hours + countdownTime.minutes + countdownTime.seconds
           );
-        }, 1000)
+        }, 100)
       )
       .catch((error) =>
         setTimeout(() => {
@@ -104,7 +104,7 @@ const Main = ({ startQuiz }) => {
             setProcessing(false);
             setError(error);
           }
-        }, 1000)
+        }, 100)
       );
   };
 
