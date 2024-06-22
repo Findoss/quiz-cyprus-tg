@@ -28,7 +28,6 @@ import {
 } from '../../constants';
 import { shuffle } from '../../utils';
 
-import Offline from '../Offline';
 import Layout from '../Layout';
 
 const Main = ({ startQuiz }) => {
@@ -43,7 +42,6 @@ const Main = ({ startQuiz }) => {
   });
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
-  const [offline, setOffline] = useState(false);
 
   const handleTimeChange = (e, { name, value }) => {
     setCountdownTime({ ...countdownTime, [name]: value });
@@ -108,17 +106,15 @@ const Main = ({ startQuiz }) => {
       )
       .catch((error) =>
         setTimeout(() => {
-          if (!navigator.onLine) {
-            setOffline(true);
-          } else {
+          if (navigator.onLine) {
             setProcessing(false);
             setError(error);
+          } else {
+            console.error('offline');
           }
         }, 100)
       );
   };
-
-  if (offline) return <Offline />;
 
   return (
     <Layout
