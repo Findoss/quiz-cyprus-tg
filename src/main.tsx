@@ -1,13 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
+import { TG } from './libs/telegram';
 import './index.css';
-
-declare global {
-  interface Window {
-    Telegram: any;
-  }
-}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -15,6 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
-setTimeout(() => {
-  window.Telegram.WebApp.expand();
-}, 2000);
+if (!TG.WebApp.isExpanded) {
+  TG.WebApp.expand();
+}
