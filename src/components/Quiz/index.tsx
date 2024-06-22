@@ -79,7 +79,7 @@ const Quiz = ({ data, countdownTime, endQuiz }) => {
                 <Item.Extra>
                   <Header fluid block floated="left">
                     <Header.Content>
-                      {`Question No.${questionIndex + 1} of ${data.length}`}
+                      {`${questionIndex + 1} of ${data.length}`}
                     </Header.Content>
                   </Header>
                   <Countdown

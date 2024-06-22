@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import Banner from '../Banner';
+import { Container } from 'semantic-ui-react';
 
 const Layout = ({ children }) => {
   return (
     <Fragment>
       <Banner />
-      <div style={{ bottom: 0, position: 'absolute' }}>
-        <main>{children}</main>
-      </div>
+      <Container>{children}</Container>
     </Fragment>
   );
 };
