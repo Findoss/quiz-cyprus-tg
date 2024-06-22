@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom/client';
 import App from './components/App';
 import { TG } from './libs/telegram';
 import { GTM } from './libs/google-gtm';
-
-import './index.css';
 import { ENV } from './libs/env';
 import { SENTRY } from './libs/sentry';
+
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

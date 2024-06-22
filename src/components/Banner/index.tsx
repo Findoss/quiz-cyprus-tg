@@ -7,7 +7,6 @@ const Banner = () => {
         height: '90px',
         width: '100%',
         backgroundColor: 'brown',
-        marginBottom: 15,
       }}
     >
       Banner

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Segment, Header, Button } from 'semantic-ui-react';
+import { Segment, Header, Button, Message } from 'semantic-ui-react';
 
 import { calculateScore, calculateGrade, timeConverter } from '../../utils';
+import Layout from '../Layout';
 
 const Stats = ({
   totalQuestions,
@@ -16,10 +17,10 @@ const Stats = ({
   const { hours, minutes, seconds } = timeConverter(timeTaken);
 
   return (
-    <Segment>
-      <Header as="h1" textAlign="center" block>
+    <>
+      <Message textAlign="center" block>
         {remarks}
-      </Header>
+      </Message>
       <Header as="h2" textAlign="center" block>
         Grade: {grade}
       </Header>
@@ -39,29 +40,7 @@ const Stats = ({
         Time Taken:{' '}
         {`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`}
       </Header>
-      <div style={{ marginTop: 35 }}>
-        <Button
-          primary
-          content="Start again"
-          onClick={replayQuiz}
-          size="big"
-          fluid
-          icon="redo"
-          labelPosition="left"
-          style={{ marginRight: 15, marginBottom: 8 }}
-        />
-        <Button
-          color="teal"
-          content="Back to Home"
-          onClick={resetQuiz}
-          size="big"
-          fluid
-          icon="home"
-          labelPosition="left"
-          style={{ marginBottom: 8 }}
-        />
-      </div>
-    </Segment>
+    </>
   );
 };
 

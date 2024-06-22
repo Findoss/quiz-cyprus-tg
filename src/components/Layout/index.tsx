@@ -1,12 +1,17 @@
 import React, { Fragment } from 'react';
 import Banner from '../Banner';
-import { Container } from 'semantic-ui-react';
 
-const Layout = ({ children }) => {
+import './style.css';
+
+const Layout = ({ header, body, footer }) => {
   return (
     <Fragment>
       <Banner />
-      <Container>{children}</Container>
+      <div className="container">
+        <div className="header"> {header}</div>
+        <div className="body"> {body}</div>
+        <div className="footer"> {footer}</div>
+      </div>
     </Fragment>
   );
 };

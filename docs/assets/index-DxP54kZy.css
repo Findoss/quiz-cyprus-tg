@@ -1,4 +1,4 @@
-@import"https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin";/*!
+@import"https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin";.container{display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;align-content:stretch;margin:10px;gap:10px;height:calc(100vh - 110px)}.body{max-height:100%;padding-right:10px;overflow-y:auto}/*!
 * # Semantic UI 2.5.0 - Reset
 * http://github.com/semantic-org/semantic-ui/
 *

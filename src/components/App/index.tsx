@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-import Layout from '../Layout';
 import Main from '../Main';
 import Quiz from '../Quiz';
 import Result from '../Result';
@@ -71,7 +70,7 @@ const App = () => {
   };
 
   return (
-    <Layout>
+    <>
       {loading && (
         <Dimmer active style={{ bottom: 0, position: 're' }}>
           <Loader>Loading...</Loader>
@@ -86,7 +85,7 @@ const App = () => {
       {!loading && isQuizCompleted && (
         <Result {...resultData} replayQuiz={replayQuiz} resetQuiz={resetQuiz} />
       )}
-    </Layout>
+    </>
   );
 };
 

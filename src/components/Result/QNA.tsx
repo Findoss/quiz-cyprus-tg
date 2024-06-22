@@ -5,6 +5,7 @@ import {
   MessageItem,
   MessageList,
 } from 'semantic-ui-react';
+import Layout from '../Layout';
 
 const QNA = ({ questionsAndAnswers }) => {
   return (
