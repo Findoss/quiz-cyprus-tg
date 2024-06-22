@@ -18,7 +18,7 @@ if (!TG.WebApp.isExpanded) {
   TG.WebApp.expand();
 }
 
-if (ENV.DEV) {
+if (!ENV.DEV) {
   GTM.init({
     code: 'G-X5R9R07QTD',
     debug: false,
