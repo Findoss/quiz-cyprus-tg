@@ -6,7 +6,7 @@ const Banner = () => {
       style={{
         height: '90px',
         width: '100%',
-        backgroundColor: 'brown',
+        backgroundColor: '#cccccc',
       }}
     >
       Banner
