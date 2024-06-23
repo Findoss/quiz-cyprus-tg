@@ -1,23 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Container,
-  Segment,
-  Item,
-  Dropdown,
-  Divider,
-  Button,
-  Message,
-  Grid,
-  GridColumn,
-  GridRow,
-  ItemGroup,
-  ItemContent,
-  ItemDescription,
-  ItemExtra,
-  ItemHeader,
-  ItemImage,
-} from 'semantic-ui-react';
+import { Item, Dropdown, Divider, Button, Message } from 'semantic-ui-react';
 
 import {
   CATEGORIES,

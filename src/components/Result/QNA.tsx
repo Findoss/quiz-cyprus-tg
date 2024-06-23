@@ -5,7 +5,6 @@ import {
   MessageItem,
   MessageList,
 } from 'semantic-ui-react';
-import Layout from '../Layout';
 
 const QNA = ({ questionsAndAnswers }) => {
   return (
@@ -14,18 +13,17 @@ const QNA = ({ questionsAndAnswers }) => {
         ({ question, user_answer, correct_answer, point }, i) => (
           <Message>
             <MessageHeader>
-              {' '}
-              No.<span>{i + 1}</span> <span>{question}</span>
+              No.{i + 1} {question}
             </MessageHeader>
             <MessageList>
               <MessageItem>
-                Your Answers <span>{user_answer}</span>
+                Your Answers <strong>{user_answer}</strong>
               </MessageItem>
               <MessageItem>
-                Correct Answers <span>{correct_answer}</span>
+                Correct Answers <strong>{correct_answer}</strong>
               </MessageItem>
               <MessageItem>
-                Points <span>{point}</span>
+                Points <strong>{point}</strong>
               </MessageItem>
             </MessageList>
           </Message>

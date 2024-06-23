@@ -72,8 +72,10 @@ const App = () => {
   return (
     <>
       {loading && (
-        <Dimmer active style={{ bottom: 0, position: 're' }}>
-          <Loader>Loading...</Loader>
+        <Dimmer active inverted>
+          <Loader size="massive" active>
+            Loading...
+          </Loader>
         </Dimmer>
       )}
       {!loading && !isQuizStarted && !isQuizCompleted && (
