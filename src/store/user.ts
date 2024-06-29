@@ -14,18 +14,25 @@ export const useStoreUser = create((set) => ({
       ? 'http://localhost:1337'
       : 'https://4a26-87-228-147-110.ngrok-free.app';
 
+    const data = ENV.DEV
+      ? 'user=%7B%22id%22%3A182531780%2C%22first_name%22%3A%22Nikita%22%2C%22last_name%22%3A%22Stroganov%22%2C%22username%22%3A%22findoss%22%2C%22language_code%22%3A%22ru%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-7270973264668056357&chat_type=private&auth_date=1719526474&hash=224ca4a288bd461e3ce069ac55746757c6939021c1a9fd870c2515899d6da507'
+      : TG.WebApp.initData;
+
     const raw = await fetch(`${host}/api/telegram-auth`, {
       method: 'POST',
-      body: JSON.stringify({ data: TG.WebApp.initData }),
+      body: JSON.stringify({ data }),
     });
 
     const response = await raw.json();
 
-    // console.log('response', response);
-
     if (response.error.message) {
       return { error: response.error.message };
     }
+
+    set(() => ({
+      plan: response.data.tg_quiz_plan,
+    }));
+
     return { data: response.data.jwt };
   },
 }));
