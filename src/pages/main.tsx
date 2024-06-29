@@ -28,38 +28,39 @@ const Main = () => {
   const categoriesDropdown = useStoreCategories(selectorCategoriesDropdown);
   const langsDropdown = useStoreLangs(selectorLangsDropdown);
 
-  console.log(showAlert);
-
   useEffect(() => {
     auth()
       .then((data) => {
-        console.log(111, data);
-        if (data.error) {
+        if (data.error !== undefined) {
+          console.log(111, data);
           showAlert({
             type: 'error',
             title: 'Error auth',
             message: data.error,
           });
         } else {
-          showAlert({ type: 'info', title: 'Good auth', message: data.jwt });
+          console.log(222, data);
+          showAlert({
+            type: 'info',
+            title: 'Good auth',
+            message: data.jwt,
+          });
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }, []);
-
-  console.log('alert', alert);
 
   return (
     <LayoutMain
       header={
         <Item>
           {alert.message && (
-            <Message {...{ [alert.type]: alert.type }} onDismiss={resetAlert}>
+            <Message {...{ [alert.type]: true }} onDismiss={resetAlert}>
               <Message.Header>{alert.title}</Message.Header>
-              {alert.message}
+              <span>{alert.message}</span>
             </Message>
           )}
-          Your plan: <strong>{userPlan}</strong>
+          Your plan: <strong>{PLAN[userPlan]}</strong>
           {/* Your plan: <strong>{PLANS.premium}</strong> (аctive until 15.12.25) */}
           <br />
           <br />

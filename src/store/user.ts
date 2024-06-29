@@ -20,20 +20,26 @@ export const useStoreUser = create((set) => ({
 
     const raw = await fetch(`${host}/api/telegram-auth`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ data }),
     });
 
     const response = await raw.json();
 
-    if (response.error.message) {
+    console.log(response);
+
+    if (response.error !== undefined) {
       return { error: response.error.message };
     }
 
-    set(() => ({
-      plan: response.data.tg_quiz_plan,
+    set((state) => ({
+      ...state,
+      plan: response.user.tg_quiz_plan,
     }));
 
-    return { data: response.data.jwt };
+    return response;
   },
 }));
 
