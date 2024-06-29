@@ -7,7 +7,7 @@ import { timeConverter } from '../../utils';
 const Countdown = ({ countdownTime, timeOver, setTimeTaken }) => {
   const totalTime = countdownTime * 1000;
   const [timerTime, setTimerTime] = useState(totalTime);
-  const { hours, minutes, seconds } = timeConverter(timerTime);
+  const { minutes, seconds } = timeConverter(timerTime);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,11 +39,6 @@ const Countdown = ({ countdownTime, timeOver, setTimeTaken }) => {
 
   return (
     <Button.Group basic floated="right">
-      <Popup
-        content="Hours"
-        trigger={<Button active>{hours}</Button>}
-        position="bottom left"
-      />
       <Popup
         content="Minutes"
         trigger={<Button active>{minutes}</Button>}

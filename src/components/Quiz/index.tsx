@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  Container,
-  Segment,
   Item,
   Divider,
   Button,
-  Icon,
   Message,
   Menu,
   Header,

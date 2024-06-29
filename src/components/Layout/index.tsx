@@ -3,7 +3,7 @@ import Banner from '../Banner';
 
 import './style.css';
 
-const Layout = ({ header, body, footer }) => {
+export const LayoutMain = ({ header, body, footer }) => {
   return (
     <Fragment>
       <Banner />
@@ -15,5 +15,3 @@ const Layout = ({ header, body, footer }) => {
     </Fragment>
   );
 };
-
-export default Layout;

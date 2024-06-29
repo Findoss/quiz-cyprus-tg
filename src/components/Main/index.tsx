@@ -1,28 +1,36 @@
 import React, { useState } from 'react';
-import { Item, Dropdown, Divider, Button, Message } from 'semantic-ui-react';
+import {
+  Item,
+  Dropdown,
+  Divider,
+  Button,
+  Message,
+  FormInput,
+  Input,
+} from 'semantic-ui-react';
 import Layout from '../Layout';
 import { shuffle } from '../../utils';
 
 import { TG } from '../../libs/telegram';
 
-import PLANS from '../../constants/plans';
 import { langsSelector, langsPremium } from '../../constants/langs';
-import COUNTDOWN_TIME from '../../constants/countdownTime';
-import NUM_OF_QUESTIONS from '../../constants/numOfQuestions';
-
 import {
   categoriesPremium,
   categoriesSelector,
 } from '../../constants/categories';
+import { numOfQuestionsSelector } from '../../constants/numOfQuestions';
+
+import PLANS from '../../store/plan';
+import COUNTDOWN_TIME from '../../constants/countdownTime';
+import { QUIZ } from '../../constants/quiz';
 
 const Main = ({ startQuiz }) => {
-  const [category, setCategory] = useState('0');
+  const [category, setCategory] = useState('-1');
   const [numOfQuestions, setNumOfQuestions] = useState(5);
   const [lang, setLang] = useState('ell');
 
   const [countdownTime, setCountdownTime] = useState({
-    hours: 0,
-    minutes: 120,
+    minutes: 300,
     seconds: 0,
   });
   const [processing, setProcessing] = useState(false);
@@ -36,7 +44,7 @@ const Main = ({ startQuiz }) => {
   if (
     category &&
     numOfQuestions &&
-    (countdownTime.hours || countdownTime.minutes || countdownTime.seconds)
+    (countdownTime.minutes || countdownTime.seconds)
   ) {
     allFieldsSelected = true;
   }
@@ -46,57 +54,15 @@ const Main = ({ startQuiz }) => {
 
     if (error) setError(null);
 
-    const API = `https://opentdb.com/api.php?amount=${numOfQuestions}&category=${category}&type=0`;
+    QUIZ.forEach((element) => {
+      element.options = shuffle([
+        element.correct_answer,
+        ...element.incorrect_answers,
+      ]);
+    });
 
-    fetch(API)
-      .then((respone) => respone.json())
-      .then((data) =>
-        setTimeout(() => {
-          const { response_code, results } = data;
-
-          if (response_code === 1) {
-            const message = (
-              <p>
-                The API doesn't have enough questions for your query. (Ex.
-                Asking for 50 Questions in a Category that only has 20.)
-                <br />
-                <br />
-                Please change the <strong>No. of Questions</strong>,{' '}
-                <strong>Difficulty Level</strong>, or{' '}
-                <strong>Type of Questions</strong>.
-              </p>
-            );
-
-            setProcessing(false);
-            setError({ message });
-
-            return;
-          }
-
-          results.forEach((element) => {
-            element.options = shuffle([
-              element.correct_answer,
-              ...element.incorrect_answers,
-            ]);
-          });
-
-          setProcessing(false);
-          startQuiz(
-            results,
-            countdownTime.hours + countdownTime.minutes + countdownTime.seconds
-          );
-        }, 100)
-      )
-      .catch((error) =>
-        setTimeout(() => {
-          if (navigator.onLine) {
-            setProcessing(false);
-            setError(error);
-          } else {
-            console.error('offline');
-          }
-        }, 100)
-      );
+    setProcessing(false);
+    startQuiz(QUIZ, countdownTime.minutes);
   };
 
   return (
@@ -109,8 +75,9 @@ const Main = ({ startQuiz }) => {
           <br />
           {PLANS.premium} features:
           <ol>
-            <li>📒 All categories: {categoriesPremium.join(', ')}</li>
+            <li>📚 All categories: {categoriesPremium.join(', ')}</li>
             <li>🌍 Languages: {langsPremium.join(', ')}</li>
+            <li>♾️ No limit questions</li>
             <li>🙅🏻‍♂️ Without advertising</li>
           </ol>
           <Button
@@ -122,7 +89,6 @@ const Main = ({ startQuiz }) => {
             labelPosition="left"
             style={{ marginBottom: 8 }}
           />
-          <pre>{JSON.stringify(TG.WebApp.initDataUnsafe, null, 2)}</pre>
           {error && (
             <Message error onDismiss={() => setError(null)}>
               <Message.Header>Error!</Message.Header>
@@ -155,7 +121,7 @@ const Main = ({ startQuiz }) => {
                   selection
                   name="numOfQ"
                   placeholder="Select No. of Questions"
-                  options={NUM_OF_QUESTIONS}
+                  options={numOfQuestionsSelector}
                   value={numOfQuestions}
                   onChange={(e, { value }) => setNumOfQuestions(value)}
                   disabled={processing}
@@ -180,17 +146,6 @@ const Main = ({ startQuiz }) => {
                   compact
                   search
                   selection
-                  name="hours"
-                  placeholder="hour"
-                  options={COUNTDOWN_TIME.hours}
-                  value={countdownTime.hours}
-                  onChange={handleTimeChange}
-                  disabled={processing}
-                />
-                <Dropdown
-                  compact
-                  search
-                  selection
                   name="minutes"
                   placeholder="min"
                   options={COUNTDOWN_TIME.minutes}
@@ -198,21 +153,9 @@ const Main = ({ startQuiz }) => {
                   onChange={handleTimeChange}
                   disabled={processing}
                 />
-                <Dropdown
-                  compact
-                  search
-                  selection
-                  name="seconds"
-                  placeholder="sec"
-                  options={COUNTDOWN_TIME.seconds}
-                  value={countdownTime.seconds}
-                  onChange={handleTimeChange}
-                  disabled={processing}
-                />
               </Item.Meta>
               <Divider />
-
-              <Item.Extra></Item.Extra>
+              <pre>{JSON.stringify(TG.WebApp.initDataUnsafe, null, 2)}</pre>
             </Item.Content>
           </Item>
         </Item.Group>

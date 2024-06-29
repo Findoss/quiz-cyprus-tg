@@ -2,16 +2,22 @@ import PLANS from './plans';
 
 const CATEGORIES = [
   {
-    key: '-1',
+    key: -1,
     text: `Demo`,
     isPremium: false,
     value: '-1',
   },
   {
-    key: '0',
-    text: `Any Category`,
+    key: 0,
+    text: `All Category`,
     isPremium: true,
     value: '0',
+  },
+  {
+    key: 1,
+    text: `Any Category`,
+    isPremium: true,
+    value: 1,
   },
   {
     key: 9,
@@ -42,10 +48,14 @@ const CATEGORIES = [
 export const categoriesSelector = CATEGORIES.map((v) => {
   if (v.isPremium) {
     return {
-      ...v,
+      key: v.key,
+      value: v.value,
       text: `${v.text} (${PLANS.premium})`,
+      disabled: v.isPremium,
     };
   }
+
+  delete v.isPremium;
   return v;
 });
 
@@ -54,3 +64,42 @@ export const categoriesPremium = CATEGORIES.filter((v) => v.isPremium).map(
 );
 
 export default CATEGORIES;
+
+// NEW
+const CATEGORIESS = {
+  demo: {
+    text: `Demo`,
+    isPremium: false,
+    value: 0,
+  },
+  allCategory: {
+    text: `All Category`,
+    isPremium: false,
+    value: 1,
+  },
+  anyCategory: {
+    text: `Any Category`,
+    isPremium: false,
+    value: 2,
+  },
+  Category1: {
+    text: `Category1`,
+    isPremium: false,
+    value: 3,
+  },
+  Category2: {
+    text: `Category2`,
+    isPremium: false,
+    value: 4,
+  },
+  Category3: {
+    text: `Category3`,
+    isPremium: false,
+    value: 5,
+  },
+  Category4: {
+    text: `Category4`,
+    isPremium: false,
+    value: 6,
+  },
+};
