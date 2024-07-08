@@ -1,15 +1,19 @@
 import { create } from 'zustand';
 import { PLAN, Plan } from './plan';
+import { isAccessPlan } from './utils/isAccessPlan';
 
-const MODES: Record<string, { text: string; plan: Plan; value: number }> = {
+export const MODES: Record<
+  string,
+  { text: string; plans: Plan[]; value: number }
+> = {
   education: {
     text: 'Education',
-    plan: PLAN.free,
+    plans: [PLAN.free],
     value: 0,
   },
   exam: {
     text: 'Exam',
-    plan: PLAN.free,
+    plans: [PLAN.free],
     value: 1,
   },
 } as const;
@@ -22,13 +26,15 @@ export const useStoreMode = create<State>(() => ({
   modes: MODES,
 }));
 
-export const selectorDropdown = (state: State) => {
-  return Object.entries(state.modes).map(([k, v]) => {
+export const selectorModesDropdown = (userPlan: Plan) => (state: State) => {
+  return Object.entries(state.modes).map(([, v]) => {
     return {
-      key: k,
-      value: k,
-      text: v.plan === PLAN.premium ? `${v.text} (${PLAN.premium})` : v.text,
-      ...(v.plan === PLAN.premium && { disabled: true }),
+      key: v.value,
+      value: v.value,
+      text: isAccessPlan(v.plans, userPlan)
+        ? v.text
+        : `${v.text} (${PLAN.premium})`,
+      ...(!isAccessPlan(v.plans, userPlan) && { disabled: true }),
     };
   });
 };

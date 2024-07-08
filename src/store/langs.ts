@@ -1,21 +1,29 @@
 import { create } from 'zustand';
 import { PLAN, Plan } from './plan';
+import { isAccessPlan } from './utils/isAccessPlan';
 
 // lang key code ISO 639-3
-export const LANGS = {
+export const LANGS: Record<
+  string,
+  {
+    text: string;
+    plans: Plan[];
+    value: number;
+  }
+> = {
   ell: {
     text: 'Ελληνικά',
-    plan: PLAN.free,
+    plans: [PLAN.free, PLAN.premium],
     value: 0,
   },
   eng: {
     text: 'English',
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 1,
   },
   rus: {
     text: 'Русский',
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 2,
   },
 } as const;
@@ -28,20 +36,22 @@ export const useStoreLangs = create<State>(() => ({
   langs: LANGS,
 }));
 
-export const selectorLangsDropdown = (state: State) => {
-  return Object.entries(state.langs).map(([k, v]) => {
+export const selectorLangsDropdown = (userPlan: Plan) => (state: State) => {
+  return Object.entries(state.langs).map(([, v]) => {
     return {
-      key: k,
-      value: k,
-      text: v.plan === PLAN.premium ? `${v.text} (${PLAN.premium})` : v.text,
-      ...(v.plan === PLAN.premium && { disabled: true }),
+      key: v.value,
+      value: v.value,
+      text: isAccessPlan(v.plans, userPlan)
+        ? v.text
+        : `${v.text} (${PLAN.premium})`,
+      ...(!isAccessPlan(v.plans, userPlan) && { disabled: true }),
     };
   });
 };
 
 export const selectorLangsPlan = (plan: Plan) => (state: State) => {
   return Object.entries(state.langs)
-    .filter(([, v]) => v.plan === plan)
+    .filter(([, v]) => isAccessPlan(v.plans, plan))
     .map(([, v]) => v.text);
 };
 

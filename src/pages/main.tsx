@@ -1,49 +1,57 @@
 import React, { useEffect } from 'react';
-import { Item, Dropdown, Divider, Button, Message } from 'semantic-ui-react';
+import {
+  Item,
+  Dropdown,
+  Divider,
+  Button,
+  Message,
+  Radio,
+} from 'semantic-ui-react';
 
 import { LayoutMain } from '../components/Layout';
 import { selectorUserPlan, useStoreUser } from '../store/user';
 import { PLAN } from '../store/plan';
 import {
-  CATEGORIES,
   selectorCategoriesPremium,
   selectorCategoriesDropdown,
   useStoreCategories,
 } from '../store/categories';
 import {
-  LANGS,
   selectorLangsPremium,
   useStoreLangs,
   selectorLangsDropdown,
 } from '../store/langs';
 import { useStoreAlert } from '../store/alert';
+import { useStoreQuizSettings } from '../store/quiz-settings';
+import { selectorModesDropdown, useStoreMode } from '../store/mode';
+
+import './style.css';
 
 const Main = () => {
   const { alert, showAlert, resetAlert } = useStoreAlert();
 
   const userPlan = useStoreUser(selectorUserPlan);
   const { auth } = useStoreUser((state) => state);
+
   const categoriesPremium = useStoreCategories(selectorCategoriesPremium);
   const langsPremium = useStoreLangs(selectorLangsPremium);
-  const categoriesDropdown = useStoreCategories(selectorCategoriesDropdown);
-  const langsDropdown = useStoreLangs(selectorLangsDropdown);
+
+  const categoriesDropdown = useStoreCategories(
+    selectorCategoriesDropdown(userPlan)
+  );
+  const langsDropdown = useStoreLangs(selectorLangsDropdown(userPlan));
+  const modesDropdown = useStoreMode(selectorModesDropdown(userPlan));
+
+  const { category, lang, mode, setQuizSetting } = useStoreQuizSettings();
 
   useEffect(() => {
     auth()
       .then((data) => {
         if (data.error !== undefined) {
-          console.log(111, data);
           showAlert({
             type: 'error',
             title: 'Error auth',
             message: data.error,
-          });
-        } else {
-          console.log(222, data);
-          showAlert({
-            type: 'info',
-            title: 'Good auth',
-            message: data.jwt,
           });
         }
       })
@@ -60,26 +68,27 @@ const Main = () => {
               <span>{alert.message}</span>
             </Message>
           )}
-          Your plan: <strong>{PLAN[userPlan]}</strong>
-          {/* Your plan: <strong>{PLANS.premium}</strong> (аctive until 15.12.25) */}
-          <br />
-          <br />
-          {PLAN.premium} features:
-          <ol>
-            <li>📚 All categories: {categoriesPremium.join(', ')}</li>
-            <li>🌍 Languages: {langsPremium.join(', ')}</li>
-            <li>♾️ No limit questions</li>
-            <li>🙅🏻‍♂️ Without advertising</li>
-          </ol>
-          <Button
-            color="green"
-            content={`Buy ${PLAN.premium}`}
-            size="big"
-            fluid
-            icon="cart"
-            labelPosition="left"
-            style={{ marginBottom: 8 }}
-          />
+          <h3>Your plan: {userPlan}</h3>
+          {userPlan === PLAN.free && (
+            <>
+              {PLAN.premium} features:
+              <ol>
+                <li>📚 All categories: {categoriesPremium.join(', ')}</li>
+                <li>🌍 Languages: {langsPremium.join(', ')}</li>
+                <li>♾️ No limit questions</li>
+                <li>🙅🏻‍♂️ Without advertising</li>
+              </ol>
+              <Button
+                color="green"
+                content={`Buy ${PLAN.premium}`}
+                size="big"
+                fluid
+                icon="cart"
+                labelPosition="left"
+                style={{ marginBottom: 8 }}
+              />
+            </>
+          )}
           <Divider />
         </Item>
       }
@@ -93,9 +102,12 @@ const Main = () => {
                   fluid
                   selection
                   name="category"
-                  placeholder="Select Quiz Category"
+                  placeholder="category"
                   options={categoriesDropdown ?? []}
-                  value={CATEGORIES.demo.text}
+                  value={category}
+                  onChange={(e, { value }) => {
+                    setQuizSetting('category', value);
+                  }}
                   disabled={false}
                 />
                 <br />
@@ -106,19 +118,48 @@ const Main = () => {
                   fluid
                   selection
                   name="lang"
-                  placeholder="Select Lang"
+                  placeholder="lang"
                   options={langsDropdown ?? []}
-                  value={LANGS.ell.text}
-                  onChange={(e, { value }) => {}}
+                  value={lang}
+                  onChange={(e, { value }) => {
+                    setQuizSetting('lang', value);
+                  }}
                   disabled={false}
                 />
+                <br />
+                <p>Mode?</p>
+
+                {modesDropdown.map((radio) => (
+                  <>
+                    <Radio
+                      label={radio.text}
+                      name="radioGroup"
+                      value={radio.value}
+                      checked={radio.value === mode}
+                      onChange={(e, { value }) => {
+                        setQuizSetting('mode', value);
+                      }}
+                    />
+                    <br /> <br />
+                  </>
+                ))}
               </Item.Meta>
               <Divider />
             </Item.Content>
           </Item>
         </Item.Group>
       }
-      footer={null}
+      footer={
+        <Button
+          fluid
+          primary
+          size="big"
+          icon="play"
+          labelPosition="left"
+          content={'Start'}
+          onClick={() => {}}
+        />
+      }
     />
   );
 };

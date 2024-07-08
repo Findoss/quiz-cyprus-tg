@@ -1,40 +1,48 @@
 import { create } from 'zustand';
 import { PLAN, Plan } from './plan';
+import { isAccessPlan } from './utils/isAccessPlan';
 
-export const CATEGORIES = {
+export const CATEGORIES: Record<
+  string,
+  {
+    text: string;
+    plans: Plan[];
+    value: number;
+  }
+> = {
   demo: {
     text: `Demo`,
-    plan: PLAN.free,
+    plans: [PLAN.free, PLAN.premium],
     value: 0,
   },
   allCategory: {
     text: `All Category`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 1,
   },
   anyCategory: {
     text: `Any Category`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 2,
   },
-  Category1: {
+  category1: {
     text: `Category1`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 3,
   },
-  Category2: {
+  category2: {
     text: `Category2`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 4,
   },
-  Category3: {
+  category3: {
     text: `Category3`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 5,
   },
-  Category4: {
+  category4: {
     text: `Category4`,
-    plan: PLAN.premium,
+    plans: [PLAN.premium],
     value: 6,
   },
 } as const;
@@ -47,20 +55,23 @@ export const useStoreCategories = create<State>(() => ({
   categories: CATEGORIES,
 }));
 
-export const selectorCategoriesDropdown = (state: State) => {
-  return Object.entries(state.categories).map(([k, v]) => {
-    return {
-      key: k,
-      value: k,
-      text: v.plan === PLAN.premium ? `${v.text} (${PLAN.premium})` : v.text,
-      ...(v.plan === PLAN.premium && { disabled: true }),
-    };
-  });
-};
+export const selectorCategoriesDropdown =
+  (userPlan: Plan) => (state: State) => {
+    return Object.entries(state.categories).map(([, v]) => {
+      return {
+        key: v.value,
+        value: v.value,
+        text: isAccessPlan(v.plans, userPlan)
+          ? v.text
+          : `${v.text} (${PLAN.premium})`,
+        ...(!isAccessPlan(v.plans, userPlan) && { disabled: true }),
+      };
+    });
+  };
 
 export const selectorCategoriesPlan = (plan: Plan) => (state: State) => {
   return Object.entries(state.categories)
-    .filter(([, v]) => v.plan === plan)
+    .filter(([, v]) => isAccessPlan(v.plans, plan))
     .map(([, v]) => v.text);
 };
 

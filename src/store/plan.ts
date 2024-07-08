@@ -3,6 +3,4 @@ export const PLAN = {
   free: 'Free',
 } as const;
 
-type ValueOf<T> = T[keyof T];
-
-export type Plan = ValueOf<typeof PLAN>;
+export type Plan = (typeof PLAN)[keyof typeof PLAN];
